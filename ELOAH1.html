@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eloah Boutique</title>
+</head>
+<body>
+
+  <img src="fotos/logo.png" width="300">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E0C48A;
+    --gold-dark: #9A7A4A;
+    --bg: #181818;
+    --bg2: #1f1f1f;
+    --bg3: #252525;
+    --cream: #F2EBE0;
+    --text-muted: #8a8580;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  body { cursor: none; }
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.35s cubic-bezier(.25,.46,.45,.94);
+    opacity: 0.6;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(24,24,24,0.92);
+    backdrop-filter: blur(16px);
+    padding: 16px 48px;
+    border-bottom: 1px solid rgba(201,169,110,0.12);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s, color 0.3s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+  .nav-wa {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 9px 22px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 400;
+  }
+  .nav-wa:hover { background: var(--gold); color: var(--bg); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 48px 80px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 60%, rgba(201,169,110,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 30%, rgba(201,169,110,0.05) 0%, transparent 55%);
+  }
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,169,110,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,169,110,0.06) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  }
+  .hero-content {
+    position: relative;
+    text-align: center;
+    animation: fadeUp 1.2s cubic-bezier(.16,1,.3,1) both;
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 1s 0.2s both;
+  }
+  .hero-logo-svg {
+    display: block;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 1s 0.4s both;
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s both;
+  }
+  .hero-tagline em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 1s 0.65s both;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s 0.8s both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bg);
+    padding: 16px 40px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--cream);
+    padding: 16px 40px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    border: 1px solid rgba(242,235,224,0.25);
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s both;
+  }
+  .scroll-indicator span {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 48px;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  .divider-line { flex: 1; height: 1px; background: rgba(201,169,110,0.2); }
+  .divider-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* COLLECTIONS */
+  .section {
+    padding: 100px 48px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+  }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  .collections-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 3px;
+  }
+  .col-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg3);
+    aspect-ratio: unset;
+  }
+  .col-card:first-child {
+    grid-row: 1 / 3;
+    aspect-ratio: 3/4;
+  }
+  .col-card:not(:first-child) {
+    aspect-ratio: 4/3;
+  }
+  .col-bg {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(.25,.46,.45,.94);
+  }
+  .col-card:hover .col-bg { transform: scale(1.05); }
+  .col-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(24,24,24,0.85) 0%, transparent 50%);
+  }
+  .col-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 24px;
+  }
+  .col-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .col-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+  .col-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,169,110,0.4);
+    padding-bottom: 2px;
+    transition: border-color 0.3s;
+  }
+  .col-link:hover { border-color: var(--gold); }
+
+  /* Placeholder images with elegant dark fashion aesthetic */
+  .col-img-1 { background: linear-gradient(160deg, #2a2520 0%, #1a1510 100%); }
+  .col-img-2 { background: linear-gradient(160deg, #201e2a 0%, #141220 100%); }
+  .col-img-3 { background: linear-gradient(160deg, #1e2220 0%, #121a14 100%); }
+  .col-img-4 { background: linear-gradient(160deg, #2a2220 0%, #1a1410 100%); }
+  .col-img-5 { background: linear-gradient(160deg, #222428 0%, #141618 100%); }
+
+  /* Silhouettes */
+  .silhouette {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .silhouette svg { opacity: 0.18; }
+
+  /* FEATURES */
+  .features-band {
+    background: var(--bg2);
+    border-top: 1px solid rgba(201,169,110,0.1);
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+    padding: 60px 48px;
+  }
+  .features-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .feature-item {
+    text-align: center;
+  }
+  .feature-icon {
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .feature-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .feature-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-frame {
+    aspect-ratio: 3/4;
+    background: var(--bg3);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-frame-inner {
+    width: 100%; height: 100%;
+    background: linear-gradient(160deg, #222020 0%, #181414 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .about-frame::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid rgba(201,169,110,0.3);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .about-accent {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 120px; height: 120px;
+    border: 1px solid rgba(201,169,110,0.2);
+  }
+  .about-accent2 {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 80px; height: 80px;
+    border: 1px solid rgba(201,169,110,0.15);
+  }
+  .about-text .section-header { text-align: left; }
+  .about-body {
+    font-size: 0.9rem;
+    line-height: 2;
+    color: rgba(242,235,224,0.7);
+    margin-bottom: 32px;
+  }
+  .about-stats {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* WHATSAPP CTA */
+  .wa-section {
+    background: linear-gradient(135deg, #1c1a14 0%, #181818 50%, #141218 100%);
+    border-top: 1px solid rgba(201,169,110,0.12);
+    border-bottom: 1px solid rgba(201,169,110,0.12);
+    padding: 100px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .wa-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,169,110,0.06) 0%, transparent 65%);
+  }
+  .wa-inner { position: relative; max-width: 640px; margin: 0 auto; }
+  .wa-icon { margin-bottom: 24px; display: flex; justify-content: center; }
+  .wa-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .wa-title em { font-style: italic; color: var(--gold-light); }
+  .wa-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 44px;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+  }
+  .btn-wa {
+    background: #25D366;
+    color: #fff;
+    padding: 18px 48px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+    box-shadow: 0 0 40px rgba(37,211,102,0.2);
+  }
+  .btn-wa:hover {
+    background: #22c55e;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 40px rgba(37,211,102,0.3);
+  }
+
+  /* INSTAGRAM */
+  .instagram-section { padding: 80px 48px; max-width: 1300px; margin: 0 auto; }
+  .insta-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3px;
+    margin-bottom: 48px;
+  }
+  .insta-item {
+    aspect-ratio: 1;
+    background: var(--bg3);
+    position: relative;
+    overflow: hidden;
+  }
+  .insta-bg {
+    width: 100%; height: 100%;
+    transition: transform 0.5s ease;
+  }
+  .insta-item:hover .insta-bg { transform: scale(1.08); }
+  .insta-over {
+    position: absolute;
+    inset: 0;
+    background: rgba(201,169,110,0.15);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .insta-item:hover .insta-over { opacity: 1; }
+  .insta-link-wrap { text-align: center; }
+  .insta-handle {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,169,110,0.4);
+    padding-bottom: 2px;
+  }
+  .insta-handle:hover { border-color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid rgba(201,169,110,0.12);
+    padding: 60px 48px 32px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .nav-logo { font-size: 1.3rem; display: block; margin-bottom: 20px; }
+  .footer-brand p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 280px;
+  }
+  .footer-col-title {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 28px;
+    border-top: 1px solid rgba(201,169,110,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* FLOATING WA */
+  .floating-wa {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 200;
+    width: 58px; height: 58px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+    transition: all 0.3s;
+    animation: pulse 2.5s infinite;
+  }
+  .floating-wa:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 32px rgba(37,211,102,0.5);
+    animation: none;
+  }
+  .floating-wa-tooltip {
+    position: absolute;
+    right: 68px;
+    background: var(--bg3);
+    color: var(--cream);
+    font-size: 0.72rem;
+    padding: 8px 14px;
+    white-space: nowrap;
+    border: 1px solid rgba(201,169,110,0.2);
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s;
+    pointer-events: none;
+    letter-spacing: 0.08em;
+  }
+  .floating-wa:hover .floating-wa-tooltip { opacity: 1; transform: translateX(0); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.4; }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.35); }
+    50% { box-shadow: 0 4px 40px rgba(37,211,102,0.6); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.1s; }
+  .reveal-d2 { transition-delay: 0.2s; }
+  .reveal-d3 { transition-delay: 0.3s; }
+  .reveal-d4 { transition-delay: 0.4s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 70px; }
+    .collections-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .col-card:first-child { grid-column: 1 / 3; grid-row: 1; aspect-ratio: 16/9; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-visual { display: none; }
+    .features-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .insta-grid { grid-template-columns: repeat(3, 1fr); }
+    .wa-section { padding: 70px 24px; }
+    .instagram-section { padding: 60px 24px; }
+  }
+  @media (max-width: 600px) {
+    .features-band { padding: 48px 24px; }
+    .features-inner { grid-template-columns: 1fr; gap: 24px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+    .insta-grid { grid-template-columns: repeat(2, 1fr); }
+    .floating-wa { bottom: 20px; right: 20px; }
+    .hero-ctas { flex-direction: column; align-items: center; }
+    footer { padding: 48px 24px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/5591984348223im pelo site da Eloah Boutique e gostaria de mais informações 💛" 
+   class="floating-wa" target="_blank" rel="noopener">
+  <span class="floating-wa-tooltip">Fale conosco</span>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">ELOAH</a>
+  <ul class="nav-links">
+    <li><a href="#colecoes">Coleções</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#instagram">Lookbook</a></li>
+  </ul>
+  <a href="https://wa.me/5591984348223?text=Olá! Gostaria de conhecer os produtos da Eloah Boutique 💛" 
+     class="nav-wa" target="_blank">Comprar agora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Boutique feminina exclusiva</p>
+
+    <!-- Logo SVG inspired by the brand -->
+    <svg class="hero-logo-svg" width="220" height="52" viewBox="0 0 220 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- E reversed -->
+      <path d="M10 8H30M10 8V44M10 44H30M10 26H24" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- L -->
+      <path d="M40 8V44H60" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Omega/arc symbol -->
+      <path d="M70 26 A14 14 0 1 1 98 26" stroke="#C9A96E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="84" cy="38" r="3" fill="#C9A96E"/>
+      <!-- A -->
+      <path d="M108 44L118 8L128 44M112 30H124" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- H -->
+      <path d="M138 8V44M158 8V44M138 26H158" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+
+    <h1 class="hero-tagline">Moda que conta<br><em>a sua história</em></h1>
+    <p class="hero-sub">Peças selecionadas com refinamento e estilo para mulheres que expressam sua elegância com autenticidade.</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/5591984348223?text=Olá! Quero ver as novidades da Eloah Boutique 💛" 
+         class="btn-primary" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Falar com a loja
+      </a>
+      <a href="#colecoes" class="btn-secondary">Ver coleções</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-diamond"></div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- FEATURES BAND -->
+<div class="features-band reveal">
+  <div class="features-inner">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="feature-title">Qualidade premium</div>
+      <p class="feature-text">Peças selecionadas com alto padrão de acabamento</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <div class="feature-title">Atendimento rápido</div>
+      <p class="feature-text">Resposta ágil via WhatsApp para sua conveniência</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </div>
+      <div class="feature-title">Estilo exclusivo</div>
+      <p class="feature-text">Curadoria pensada para valorizar cada silhueta</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <div class="feature-title">Loja física</div>
+      <p class="feature-text">Visite nossa boutique e experimente pessoalmente</p>
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="section" id="colecoes">
+  <div class="section-header reveal">
+    <p class="section-label">Novidades</p>
+    <h2 class="section-title">Coleções <em>em destaque</em></h2>
+  </div>
+
+  <div class="collections-grid reveal">
+
+    <!-- Card 1 - large -->
+    <a href="https://wa.me/5591984348223?text=Olá! Tenho interesse nos conjuntos da Eloah Boutique 💛" 
+       target="_blank" class="col-card col-img-1" style="text-decoration:none;">
+      <div class="silhouette">
+        <svg width="200" height="320" viewBox="0 0 200 320" fill="none">
+          <ellipse cx="100" cy="50" rx="30" ry="30" fill="#C9A96E"/>
+          <path d="M70 80 Q60 120 55 180 Q50 240 60 320L140 320 Q150 240 145 180 Q140 120 130 80 Q115 95 100 95 Q85 95 70 80Z" fill="#C9A96E"/>
+        </svg>
+      </div>
+      <div class="col-overlay"></div>
+      <div class="col-info">
+        <div class="col-tag">Conjunto</div>
+        <div class="col-name">Looks completos</div>
+        <span class="col-link">Ver no WhatsApp →</span>
+      </div>
+    </a>
+
+    <!-- Card 2 -->
+    <a href="https://wa.me/5591984348223?text=Olá! Quero ver os vestidos da Eloah Boutique 💛" 
+       target="_blank" class="col-card col-img-2" style="text-decoration:none;">
+      <div class="col-overlay"></div>
+      <div class="col-info">
+        <div class="col-tag">Nova coleção</div>
+        <div class="col-name">Vestidos & saias</div>
+        <span class="col-link">Ver no WhatsApp →</span>
+      </div>
+    </a>
+
+    <!-- Card 3 -->
+    <a href="https://wa.me/5591984348223?text=Olá! Tenho interesse nas blusas e tops da Eloah Boutique 💛" 
+       target="_blank" class="col-card col-img-3" style="text-decoration:none;">
+      <div class="col-overlay"></div>
+      <div class="col-info">
+        <div class="col-tag">Tendência</div>
+        <div class="col-name">Blusas & tops</div>
+        <span class="col-link">Ver no WhatsApp →</span>
+      </div>
+    </a>
+
+    <!-- Card 4 -->
+    <a href="https://wa.me/5591984348223?text=Olá! Quero ver as calças e bermudas da Eloah Boutique 💛" 
+       target="_blank" class="col-card col-img-4" style="text-decoration:none;">
+      <div class="col-overlay"></div>
+      <div class="col-info">
+        <div class="col-tag">Essenciais</div>
+        <div class="col-name">Calças & shorts</div>
+        <span class="col-link">Ver no WhatsApp →</span>
+      </div>
+    </a>
+
+    <!-- Card 5 -->
+    <a href="https://wa.me/5591984348223?text=Olá! Quero ver os looks completos da Eloah Boutique 💛" 
+       target="_blank" class="col-card col-img-5" style="text-decoration:none;">
+      <div class="col-overlay"></div>
+      <div class="col-info">
+        <div class="col-tag">Look do dia</div>
+        <div class="col-name">Looks completos</div>
+        <span class="col-link">Ver no WhatsApp →</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="sobre">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-accent"></div>
+      <div class="about-accent2"></div>
+      <div class="about-frame">
+        <div class="about-frame-inner">
+          <svg width="160" height="280" viewBox="0 0 160 280" fill="none" opacity="0.25">
+            <ellipse cx="80" cy="44" rx="26" ry="26" fill="#C9A96E"/>
+            <path d="M54 70Q44 108 42 160Q40 212 50 280L110 280Q120 212 118 160Q116 108 106 70Q94 82 80 82Q66 82 54 70Z" fill="#C9A96E"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-header reveal">
+        <p class="section-label">Nossa história</p>
+        <h2 class="section-title">Elegância que <em>transforma</em></h2>
+      </div>
+      <p class="about-body reveal reveal-d1">
+        A Eloah Boutique nasceu da paixão por moda feminina com personalidade. Cada peça é cuidadosamente escolhida para oferecer estilo, conforto e exclusividade para mulheres que sabem o que querem.
+      </p>
+      <p class="about-body reveal reveal-d2">
+        Nossa curadoria une tendências contemporâneas com elegância atemporal, trazendo coleções que valorizam cada mulher em sua individualidade.
+      </p>
+      <div class="about-stats reveal reveal-d3">
+        <div>
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Clientes felizes</span>
+        </div>
+        <div>
+          <span class="stat-num">3+</span>
+          <span class="stat-label">Anos de história</span>
+        </div>
+        <div>
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Estilo único</span>
+        </div>
+      </div>
+      <div class="reveal reveal-d4">
+        <a href="https://wa.me/5591984348223?text=Olá! Quero conhecer a Eloah Boutique 💛" 
+           class="btn-primary" target="_blank">
+          Conhecer a loja
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-diamond"></div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- WHATSAPP CTA -->
+<section class="wa-section">
+  <div class="wa-inner">
+    <div class="wa-icon reveal">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="#25D366">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </div>
+    <h2 class="wa-title reveal reveal-d1">Atendimento <em>personalizado</em><br>pelo WhatsApp</h2>
+    <p class="wa-sub reveal reveal-d2">
+      Tire dúvidas sobre tamanhos, disponibilidade e prazo de entrega.<br>
+      Nossa equipe está pronta para te atender com exclusividade.
+    </p>
+    <a href="https://wa.me/5591984348223?text=Olá! Vim pelo site e gostaria de mais informações sobre as peças da Eloah Boutique 💛" 
+       class="btn-wa reveal reveal-d3" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Chamar no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram-section" id="instagram">
+  <div class="section-header reveal">
+    <p class="section-label">Lookbook</p>
+    <h2 class="section-title">Siga no <em>Instagram</em></h2>
+  </div>
+  <div class="insta-grid reveal">
+    <!-- 6 Instagram preview tiles with different gradient moods -->
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#2a1f1a,#1a1410); width:100%;height:100%;"></div>
+      <div class="insta-over">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+    </div>
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#201a2a,#14101a); width:100%;height:100%;"></div>
+      <div class="insta-over">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+    </div>
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#1e2420,#121a14); width:100%;height:100%;"></div>
+      <div class="insta-over">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+    </div>
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#242018,#181410); width:100%;height:100%;"></div>
+      <div class="insta-over"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#1e1c2a,#141218); width:100%;height:100%;"></div>
+      <div class="insta-over"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="insta-item">
+      <div class="insta-bg" style="background: linear-gradient(135deg,#1c2020,#101414); width:100%;height:100%;"></div>
+      <div class="insta-over"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+  </div>
+  <div class="insta-link-wrap reveal">
+    <a href="https://www.instagram.com/eloah_boutique" target="_blank" class="insta-handle">
+      @eloah_boutique — Seguir no Instagram
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="nav-logo">ELOAH</span>
+      <p>Boutique feminina com curadoria de moda exclusiva. Elegância e estilo para a mulher contemporânea.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Navegação</div>
+      <ul class="footer-links">
+        <li><a href="#colecoes">Coleções</a></li>
+        <li><a href="#sobre">Sobre nós</a></li>
+        <li><a href="#instagram">Lookbook</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contato</div>
+      <ul class="footer-links">
+        <li><a href="https://wa.me/5591984348223" target="_blank">WhatsApp</a></li>
+        <li><a href="https://instagram.com/eloah_boutique" target="_blank">Instagram</a></li>
+        <li><a href="#">Localização</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Atendimento</div>
+      <ul class="footer-links">
+        <li><a href="#">Seg–Sáb: 8h–12h e 15h30-20h</a></li>
+        <li><a href="https://wa.me/5591984348223" target="_blank">Fale conosco</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Eloah Boutique. Todos os direitos reservados.</span>
+    <span style="color: var(--gold); font-size: 0.65rem; letter-spacing: 0.3em;">MODA · ESTILO · ELEGÂNCIA</span>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = (mx - 4) + 'px';
+    cursor.style.top = (my - 4) + 'px';
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = (rx - 16) + 'px';
+    ring.style.top = (ry - 16) + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.transform = 'scale(1.8)'; cursor.style.transform = 'scale(0.6)'; });
+    el.addEventListener('mouseleave', () => { ring.style.transform = 'scale(1)'; cursor.style.transform = 'scale(1)'; });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
